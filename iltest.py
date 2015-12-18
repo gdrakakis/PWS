@@ -1244,7 +1244,6 @@ def create_task_interlabtest():
                                 "values": suggestions_dic
                                }
                              },
-        """
         "figures": {"Figure 1: Colour Histogram for Lab Raw Data" : fig1b, 
                     "Figure 2: Histogram for Raw Lab Data": fig2b,
                     "Figure 3: Normal probability plot of expanded uncertainties based on ranks" : fig3, 
@@ -1252,9 +1251,6 @@ def create_task_interlabtest():
                     "Figure 5: Normal probability plot of result values based with z-score outliers" : fig5,
                     "Figure 6: Bar Chart of Z-scores for proficiency testing" : fig6,
                     "Figure 7: Plot of standard deviations against averages with significance values" : fig7
-                   }
-        """
-        "figures": {
                    }
     }
     #task = "" ##
