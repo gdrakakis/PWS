@@ -265,7 +265,7 @@ def hist_plots(num_bins, my_list_transposed, header):
 
     # hist returns: num inst, bin bound, patches
     nn, bb, pp  = plt.hist(my_list_transposed[1], bins=num_bins, histtype='barstacked', color = random.rand(3,1), stacked=True) # , normed=True
-    print bb
+    ##print bb
     ## copy labels for 2nd histogram (first copy gets altered here)
     labels_copy = deepcopy(labels) 
 
@@ -323,8 +323,8 @@ def hist_plots(num_bins, my_list_transposed, header):
     #plt.show() #HIDE show on production
     sio = BytesIO()
     myFIGA1a.savefig(sio, dpi=300, format='png', bbox_extra_artists=(myLegend,),bbox_inches='tight') 
-    saveas = pickle.dumps(sio.getvalue())
-    fig1a_encoded = base64.b64encode(saveas)
+    myFIGA1a.seek(0)
+    fig1a_encoded = base64.b64encode(myFIGA1a.getvalue())
 
     plt.close()
 	
@@ -352,7 +352,7 @@ def hist_plots(num_bins, my_list_transposed, header):
     for i in range (len(bb)-1):
         X.append( (bb[i] + bb[i+1]) / 2 )
         Y.append(0)
-    print X, "\n", Y
+    #print X, "\n", Y
     plt.plot(Y,X, 'r--')
     for i in range (len(X)):
         plt.text(Y[i]+0.1, X[i], labels_copy[i])
@@ -373,8 +373,8 @@ def hist_plots(num_bins, my_list_transposed, header):
     #plt.show() #HIDE show on production
     sio = BytesIO()
     myFIGA1b.savefig(sio, dpi=300, format='png') 
-    saveas = pickle.dumps(sio.getvalue())
-    fig1b_encoded = base64.b64encode(saveas)
+    myFIGA1b.seek(0)
+    fig1b_encoded = base64.b64encode(myFIGA1b.getvalue())
 
     ## String IO version
     #sio = cStringIO.StringIO()
@@ -441,8 +441,8 @@ def hist_bias(num_bins, my_list_transposed, header):
     #plt.show() #HIDE show on production
     sio = BytesIO()
     myFIGA2a.savefig(sio, dpi=300, format='png', bbox_extra_artists=(myLegend,),bbox_inches='tight') 
-    saveas = pickle.dumps(sio.getvalue())
-    fig2a_encoded = base64.b64encode(saveas)
+    myFIGA2a.seek(0)
+    fig2a_encoded = base64.b64encode(myFIGA2a.getvalue())
 
     # SIO Version
     #sio = cStringIO.StringIO()
@@ -478,8 +478,8 @@ def hist_bias(num_bins, my_list_transposed, header):
     #plt.show() #HIDE show on production
     sio = BytesIO()
     myFIGA2b.savefig(sio, dpi=300, format='png') 
-    saveas = pickle.dumps(sio.getvalue())
-    fig2b_encoded = base64.b64encode(saveas)
+    myFIGA2b.seek(0)
+    fig2b_encoded = base64.b64encode(myFIGA2b.getvalue())
 
     #sio = cStringIO.StringIO()
     #myFIGA2b.savefig(sio, dpi=300, format='png') 
@@ -496,8 +496,16 @@ def hist_bias(num_bins, my_list_transposed, header):
 """
 def plot_ranks (ranks, ranks_pc, values, uncertainties, rob_avg, uncertaintyAV):
     myFIGA3 = plt.figure()
+    
+    #0502
+    xx = [x for y, x in sorted(zip(ranks, values))]
+    yy = [y for y, x in sorted(zip(ranks, values))]
+    #print "ranks, values", ranks, values, "\n"
+    #print xx,yy
+
     plt.plot(ranks, values, 'ro')
-    plt.errorbar(ranks, values, yerr = uncertainties)
+    #plt.plot(ranks, values)
+    plt.errorbar(ranks, values, yerr = uncertainties, fmt='o')
     plt.xlim([round(min(ranks)) - 1, round(max(ranks)) + 1,])
     #sio = cStringIO.StringIO()
     #myFIGA3.savefig(sio, dpi=300, format='png') 
@@ -517,14 +525,15 @@ def plot_ranks (ranks, ranks_pc, values, uncertainties, rob_avg, uncertaintyAV):
     #plt.show() #HIDE show on production
     sio = BytesIO()
     myFIGA3.savefig(sio, dpi=300, format='png') 
-    saveas = pickle.dumps(sio.getvalue())
-    fig3_encoded = base64.b64encode(saveas)
+    myFIGA3.seek(0)
+    fig3_encoded = base64.b64encode(myFIGA3.getvalue())
 
     plt.close()
 
     myFIGA4 = plt.figure()
     plt.plot(ranks_pc, values, 'ro')
-    plt.errorbar(ranks_pc, values, yerr = uncertainties)
+    #plt.plot(ranks_pc, values)
+    plt.errorbar(ranks_pc, values, yerr = uncertainties, fmt='o')
     plt.xlim([round(min(ranks_pc)) - 1, round(max(ranks_pc)) + 1,])
     #sio = cStringIO.StringIO()
     #myFIGA4.savefig(sio, dpi=300, format='png') 
@@ -542,8 +551,8 @@ def plot_ranks (ranks, ranks_pc, values, uncertainties, rob_avg, uncertaintyAV):
     #plt.show() #HIDE show on production
     sio = BytesIO()
     myFIGA4.savefig(sio, dpi=300, format='png') 
-    saveas = pickle.dumps(sio.getvalue())
-    fig4_encoded = base64.b64encode(saveas)
+    myFIGA4.seek(0)
+    fig4_encoded = base64.b64encode(myFIGA4.getvalue())
 
     plt.close()
     return fig3_encoded, fig4_encoded
@@ -576,8 +585,8 @@ def ranks_vs_values (values, ranks_pc, z_scores):
     #plt.show() #HIDE show on production
     sio = BytesIO()
     myFIGA5.savefig(sio, dpi=300, format='png', bbox_inches="tight") 
-    saveas = pickle.dumps(sio.getvalue())
-    fig5_encoded = base64.b64encode(saveas)
+    myFIGA5.seek(0)
+    fig5_encoded = base64.b64encode(myFIGA5.getvalue())
 
     #sio = cStringIO.StringIO()
     #myFIGA5.savefig(sio, dpi=300, format='png') 
@@ -599,10 +608,43 @@ def anonimise_labs (myList):
 
     return myList, nameDic
 
-
 """
     Ranks and percentage ranks
 """
+def get_ranks (data_list):
+    rank = []
+    i,j = 0,0
+    while 1:
+        if i < len(data_list):
+            count_rank = 1
+            count_replicate = 1
+            j = 0
+            while 2 and j < len(data_list):
+                if (data_list[i] > data_list[j]) :
+                    count_rank += 1
+                if (data_list[i] == data_list[j] and i !=j) :
+                    count_replicate += 1
+                j += 1
+            if count_replicate >1:
+                count_repl_rank = 0
+                for repl in range (count_replicate):
+                    count_repl_rank = count_repl_rank + count_rank + repl
+                rank.append( count_repl_rank / count_replicate)
+            else:
+                rank.append(count_rank) 
+            i += 1
+        else:
+            break
+        
+    rank_pc = []
+    for i in range (len(rank)):
+        #rank_pc.append(round(100*(rank[i] - 0.5)/ len(rank),2)) # 2 decimals
+        rank_pc.append(round(100*(rank[i] - 0.5)/ len(rank),0))
+    #print "rank, datalist", rank, data_list, "\n"
+    return rank, rank_pc
+
+"""
+    Ranks and percentage ranks
 def get_ranks (data_list):
 
     rank = []
@@ -634,8 +676,9 @@ def get_ranks (data_list):
     for i in range (len(rank)):
         #rank_pc.append(round(100*(rank[i] - 0.5)/ len(rank),2)) # 2 decimals
         rank_pc.append(round(100*(rank[i] - 0.5)/ len(rank),0))
+    print "rank, datalist", rank, data_list, "\n"
     return rank, rank_pc
-
+"""
 
 """
     Get ranks and percentage ranks dictionary for report
@@ -899,8 +942,8 @@ def individual_z_scores (labz, z_scores):
         #plt.show() #HIDE show on production
         sio = BytesIO()
         myFIGA6.savefig(sio, dpi=300, format='png', bbox_inches="tight") 
-        saveas = pickle.dumps(sio.getvalue())
-        fig6_encoded = base64.b64encode(saveas)
+        myFIGA6.seek(0)
+        fig6_encoded = base64.b64encode(myFIGA6.getvalue())
 
         #sio = cStringIO.StringIO()
         #myFIGA6.savefig(sio, dpi=300, format='png') 
@@ -1076,8 +1119,8 @@ def std_v_avg (datalist, robust_average):
     #plt.show() #HIDE show on production
     sio = BytesIO()
     myFIGA7.savefig(sio, dpi=300, format='png', bbox_inches="tight") 
-    saveas = pickle.dumps(sio.getvalue())
-    fig7_encoded = base64.b64encode(saveas)
+    myFIGA7.seek(0)
+    fig7_encoded = base64.b64encode(myFIGA7.getvalue())
     #sio = cStringIO.StringIO()
     #myFIGA7.savefig(sio, dpi=300, format='png') 
     #saveas = pickle.dumps(sio.getvalue())
@@ -1293,11 +1336,11 @@ def create_task_interlabtest():
                                "Uncertainty of Assigned Value": uncertaintyAV 
                               },
         "arrayCalculations": {"Ranking Array":
-                               {"colNames": ["Given Name", "Original Name %"],
+                               {"colNames": ["Rank", "Rank %"],
                                 "values": rankDic
                                },
                               "Lab Real Names":
-                               {"colNames": ["Rank", "Rank %"],
+                               {"colNames": ["Given Name", "Original Name %"],
                                 "values": name_dictionary
                                },
                               "Detailed Warning Signals":
@@ -1354,63 +1397,63 @@ def create_task_interlabtest():
     stb = io.BytesIO(mystr)
     img = Image.open(stb)
     img.seek(0)
-    img.save('C:/Python27/Flask-0.10.1/python-api/Ilt/fig1a.png', 'png')
+    img.save('C:/Python27/Flask-0.10.1/python-api/Ilt/fig1aW.png', 'png')
  
     decc = base64.standard_b64decode(fig1b) 
     mystr = pickle.loads(decc)
     stb = io.BytesIO(mystr)
     img = Image.open(stb)
     img.seek(0)
-    img.save('C:/Python27/Flask-0.10.1/python-api/Ilt/fig1b.png', 'png')
+    img.save('C:/Python27/Flask-0.10.1/python-api/Ilt/fig1bW.png', 'png')
 
     decc = base64.standard_b64decode(fig2a) 
     mystr = pickle.loads(decc)
     stb = io.BytesIO(mystr)
     img = Image.open(stb)
     img.seek(0)
-    img.save('C:/Python27/Flask-0.10.1/python-api/Ilt/fig2a.png', 'png')
+    img.save('C:/Python27/Flask-0.10.1/python-api/Ilt/fig2aW.png', 'png')
 
     decc = base64.standard_b64decode(fig2b) 
     mystr = pickle.loads(decc)
     stb = io.BytesIO(mystr)
     img = Image.open(stb)
     img.seek(0)
-    img.save('C:/Python27/Flask-0.10.1/python-api/Ilt/fig2b.png', 'png')
+    img.save('C:/Python27/Flask-0.10.1/python-api/Ilt/fig2bW.png', 'png')
 
     decc = base64.standard_b64decode(fig3) 
     mystr = pickle.loads(decc)
     stb = io.BytesIO(mystr)
     img = Image.open(stb)
     img.seek(0)
-    img.save('C:/Python27/Flask-0.10.1/python-api/Ilt/fig3.png', 'png')
+    img.save('C:/Python27/Flask-0.10.1/python-api/Ilt/fig3W.png', 'png')
 
     decc = base64.standard_b64decode(fig4) 
     mystr = pickle.loads(decc)
     stb = io.BytesIO(mystr)
     img = Image.open(stb)
     img.seek(0)
-    img.save('C:/Python27/Flask-0.10.1/python-api/Ilt/fig4.png', 'png')
+    img.save('C:/Python27/Flask-0.10.1/python-api/Ilt/fig4W.png', 'png')
 
     decc = base64.standard_b64decode(fig5) 
     mystr = pickle.loads(decc)
     stb = io.BytesIO(mystr)
     img = Image.open(stb)
     img.seek(0)
-    img.save('C:/Python27/Flask-0.10.1/python-api/Ilt/fig5.png', 'png')
+    img.save('C:/Python27/Flask-0.10.1/python-api/Ilt/fig5W.png', 'png')
 
     decc = base64.standard_b64decode(fig6) 
     mystr = pickle.loads(decc)
     stb = io.BytesIO(mystr)
     img = Image.open(stb)
     img.seek(0)
-    img.save('C:/Python27/Flask-0.10.1/python-api/Ilt/fig6.png', 'png')
+    img.save('C:/Python27/Flask-0.10.1/python-api/Ilt/fig6W.png', 'png')
 
     decc = base64.standard_b64decode(fig7) 
     mystr = pickle.loads(decc)
     stb = io.BytesIO(mystr)
     img = Image.open(stb)
     img.seek(0)
-    img.save('C:/Python27/Flask-0.10.1/python-api/Ilt/fig7.png', 'png')
+    img.save('C:/Python27/Flask-0.10.1/python-api/Ilt/fig7W.png', 'png')
     """
     #END DELETE THIS
     return jsonOutput, 201 
@@ -1418,7 +1461,7 @@ def create_task_interlabtest():
 if __name__ == '__main__': 
     app.run(host="0.0.0.0", port = 5000, debug = True)	
 
-# curl -i -H "Content-Type: application/json" -X POST -d @C:/Python27/Flask-0.10.1/python-api/ilt1.json http://localhost:5000/pws/interlabtest
+# curl -i -H "Content-Type: application/json" -X POST -d @C:/Python27/Flask-0.10.1/python-api/iltW.json http://localhost:5000/pws/interlabtest
 # curl -i -H "Content-Type: application/json" -X POST -d @C:/Python27/Flask-0.10.1/python-api/ilt1.json http://test.jaqpot.org:8091/pws/interlabtest
 # C:\Python27\Flask-0.10.1\python-api 
 #C:/Python27/python iltest.py
