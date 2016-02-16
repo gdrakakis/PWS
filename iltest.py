@@ -323,8 +323,8 @@ def hist_plots(num_bins, my_list_transposed, header):
     #plt.show() #HIDE show on production
     sio = BytesIO()
     myFIGA1a.savefig(sio, dpi=300, format='png', bbox_extra_artists=(myLegend,),bbox_inches='tight') 
-    myFIGA1a.seek(0)
-    fig1a_encoded = base64.b64encode(myFIGA1a.getvalue())
+    sio.seek(0)
+    fig1a_encoded = base64.b64encode(sio.getvalue())
 
     plt.close()
 	
@@ -373,8 +373,8 @@ def hist_plots(num_bins, my_list_transposed, header):
     #plt.show() #HIDE show on production
     sio = BytesIO()
     myFIGA1b.savefig(sio, dpi=300, format='png') 
-    myFIGA1b.seek(0)
-    fig1b_encoded = base64.b64encode(myFIGA1b.getvalue())
+    sio.seek(0)
+    fig1b_encoded = base64.b64encode(sio.getvalue())
 
     ## String IO version
     #sio = cStringIO.StringIO()
@@ -441,8 +441,8 @@ def hist_bias(num_bins, my_list_transposed, header):
     #plt.show() #HIDE show on production
     sio = BytesIO()
     myFIGA2a.savefig(sio, dpi=300, format='png', bbox_extra_artists=(myLegend,),bbox_inches='tight') 
-    myFIGA2a.seek(0)
-    fig2a_encoded = base64.b64encode(myFIGA2a.getvalue())
+    sio.seek(0)
+    fig2a_encoded = base64.b64encode(sio.getvalue())
 
     # SIO Version
     #sio = cStringIO.StringIO()
@@ -478,8 +478,8 @@ def hist_bias(num_bins, my_list_transposed, header):
     #plt.show() #HIDE show on production
     sio = BytesIO()
     myFIGA2b.savefig(sio, dpi=300, format='png') 
-    myFIGA2b.seek(0)
-    fig2b_encoded = base64.b64encode(myFIGA2b.getvalue())
+    sio.seek(0)
+    fig2b_encoded = base64.b64encode(sio.getvalue())
 
     #sio = cStringIO.StringIO()
     #myFIGA2b.savefig(sio, dpi=300, format='png') 
@@ -525,8 +525,8 @@ def plot_ranks (ranks, ranks_pc, values, uncertainties, rob_avg, uncertaintyAV):
     #plt.show() #HIDE show on production
     sio = BytesIO()
     myFIGA3.savefig(sio, dpi=300, format='png') 
-    myFIGA3.seek(0)
-    fig3_encoded = base64.b64encode(myFIGA3.getvalue())
+    sio.seek(0)
+    fig3_encoded = base64.b64encode(sio.getvalue())
 
     plt.close()
 
@@ -551,8 +551,8 @@ def plot_ranks (ranks, ranks_pc, values, uncertainties, rob_avg, uncertaintyAV):
     #plt.show() #HIDE show on production
     sio = BytesIO()
     myFIGA4.savefig(sio, dpi=300, format='png') 
-    myFIGA4.seek(0)
-    fig4_encoded = base64.b64encode(myFIGA4.getvalue())
+    sio.seek(0)
+    fig4_encoded = base64.b64encode(sio.getvalue())
 
     plt.close()
     return fig3_encoded, fig4_encoded
@@ -585,8 +585,8 @@ def ranks_vs_values (values, ranks_pc, z_scores):
     #plt.show() #HIDE show on production
     sio = BytesIO()
     myFIGA5.savefig(sio, dpi=300, format='png', bbox_inches="tight") 
-    myFIGA5.seek(0)
-    fig5_encoded = base64.b64encode(myFIGA5.getvalue())
+    sio.seek(0)
+    fig5_encoded = base64.b64encode(sio.getvalue())
 
     #sio = cStringIO.StringIO()
     #myFIGA5.savefig(sio, dpi=300, format='png') 
@@ -942,8 +942,8 @@ def individual_z_scores (labz, z_scores):
         #plt.show() #HIDE show on production
         sio = BytesIO()
         myFIGA6.savefig(sio, dpi=300, format='png', bbox_inches="tight") 
-        myFIGA6.seek(0)
-        fig6_encoded = base64.b64encode(myFIGA6.getvalue())
+        sio.seek(0)
+        fig6_encoded = base64.b64encode(sio.getvalue())
 
         #sio = cStringIO.StringIO()
         #myFIGA6.savefig(sio, dpi=300, format='png') 
@@ -1119,8 +1119,8 @@ def std_v_avg (datalist, robust_average):
     #plt.show() #HIDE show on production
     sio = BytesIO()
     myFIGA7.savefig(sio, dpi=300, format='png', bbox_inches="tight") 
-    myFIGA7.seek(0)
-    fig7_encoded = base64.b64encode(myFIGA7.getvalue())
+    sio.seek(0)
+    fig7_encoded = base64.b64encode(sio.getvalue())
     #sio = cStringIO.StringIO()
     #myFIGA7.savefig(sio, dpi=300, format='png') 
     #saveas = pickle.dumps(sio.getvalue())
