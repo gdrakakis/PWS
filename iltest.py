@@ -856,6 +856,11 @@ def ez_scores(list, rob_avg, rob_std, u_AV, u_lab):
             Ez_minus99.append(round((list[i] - (rob_avg - (3*u_AV)))/ (3*u_lab[i]),2))
             Ez_plus99.append(round((list[i] - (rob_avg - (3*u_AV)))/ (3*u_lab[i]),2)) 
             ###print "!=0", list[i], rob_avg, u_AV, u_lab[i],(list[i] - (rob_avg - (2*u_AV)))/ (2*u_lab[i])
+	    elif u_AV !=0:
+	        Ez_minus95.append(round((list[i] - (rob_avg - (2*u_AV)))/ (2*u_AV),2)) #new 06042015
+            Ez_plus95.append(round((list[i] - (rob_avg - (2*u_AV)))/ (2*u_AV),2)) 
+            Ez_minus99.append(round((list[i] - (rob_avg - (3*u_AV)))/ (3*u_AV),2))
+            Ez_plus99.append(round((list[i] - (rob_avg - (3*u_AV)))/ (3*u_AV),2))        
         else:
             #Ez_minus95.append((list[i] - (rob_avg - (2*u_AV)))/ (2*temp_U_override))
             #Ez_plus95.append((list[i] - (rob_avg - (2*u_AV)))/ (2*temp_U_override)) 
@@ -1376,11 +1381,11 @@ def create_task_interlabtest():
     #debug area
     #######################################################
     # Entire Response JSON
-    """
-    xx = open("C:/Python27/ILTResponse.txt", "w")
+
+    xx = open("C:/Python27/delete123.txt", "w")
     xx.writelines(str(task))
     xx.close()
-    """
+
     # IMAGE
     """
     decc = base64.standard_b64decode(fig1) 
