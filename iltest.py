@@ -244,18 +244,26 @@ def kill_outliers(dataTransposed, robust_avg_x, robust_std_s):
 def hist_plots(num_bins, my_list_transposed, header):
 
     bins = numpy.linspace(min(my_list_transposed[1]), max(my_list_transposed[1]), num_bins+1)
+    for i in range (len(bins)):
+        bins[i] += 0.000001
     #print "BINS--->", bins
     labels = []
     for i in range (num_bins):
         labels.append("")
+    
+    #print my_list_transposed[1]
+    #print bins 
 
     for i in range (len(my_list_transposed[1])):
         for j in range (num_bins):
-            if my_list_transposed[1][i] >= bins[j] and my_list_transposed[1][i] <= bins[j+1]:
+            if my_list_transposed[1][i] >= bins[j] and my_list_transposed[1][i] <= bins[j+1]: #and labels[i] =="":
                 labels[j] = labels[j] + "    " + str(my_list_transposed[0][i])
+    #print "labels: ", labels
 
     colours = []
-    #print num_bins
+
+    #print "Number of bins: ", num_bins
+
     for i in range (num_bins):
         colours.append(random.rand(3,1)) # random colour scheme
                 
@@ -265,9 +273,13 @@ def hist_plots(num_bins, my_list_transposed, header):
 
     # hist returns: num inst, bin bound, patches
     nn, bb, pp  = plt.hist(my_list_transposed[1], bins=num_bins, histtype='barstacked', color = random.rand(3,1), stacked=True) # , normed=True
-    ##print bb
+    #for i in range (len(bb)):
+    #    bb += 0.000001
+
     ## copy labels for 2nd histogram (first copy gets altered here)
     labels_copy = deepcopy(labels) 
+
+    #print "labels copy: ", labels_copy
 
     for i in range (len(pp)-1,0,-1):
         if labels[i] == "":
@@ -352,7 +364,7 @@ def hist_plots(num_bins, my_list_transposed, header):
     for i in range (len(bb)-1):
         X.append( (bb[i] + bb[i+1]) / 2 )
         Y.append(0)
-    #print X, "\n", Y
+    #print X, "\n", Y ##################
     plt.plot(Y,X, 'r--')
     for i in range (len(X)):
         plt.text(Y[i]+0.1, X[i], labels_copy[i])
