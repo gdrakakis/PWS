@@ -1382,9 +1382,9 @@ def create_task_interlabtest():
     #######################################################
     # Entire Response JSON
 
-    xx = open("C:/Python27/delete123.txt", "w")
-    xx.writelines(str(task))
-    xx.close()
+    #xx = open("C:/Python27/delete123.txt", "w")
+    #xx.writelines(str(task))
+    #xx.close()
 
     # IMAGE
     """
