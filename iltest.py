@@ -244,7 +244,7 @@ def kill_outliers(dataTransposed, robust_avg_x, robust_std_s):
 def hist_plots(num_bins, my_list_transposed, header):
 
     bins = numpy.linspace(min(my_list_transposed[1]), max(my_list_transposed[1]), num_bins+1)
-    for i in range (len(bins)):
+    for i in range (1,len(bins)):
         bins[i] += 0.000001
     #print "BINS--->", bins
     labels = []
@@ -256,8 +256,10 @@ def hist_plots(num_bins, my_list_transposed, header):
 
     for i in range (len(my_list_transposed[1])):
         for j in range (num_bins):
+            #print j
             if my_list_transposed[1][i] >= bins[j] and my_list_transposed[1][i] <= bins[j+1]: #and labels[i] =="":
                 labels[j] = labels[j] + "    " + str(my_list_transposed[0][i])
+    #print "names: ", my_list_transposed[0]
     #print "labels: ", labels
 
     colours = []
