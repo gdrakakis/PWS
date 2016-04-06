@@ -856,8 +856,8 @@ def ez_scores(list, rob_avg, rob_std, u_AV, u_lab):
             Ez_minus99.append(round((list[i] - (rob_avg - (3*u_AV)))/ (3*u_lab[i]),2))
             Ez_plus99.append(round((list[i] - (rob_avg - (3*u_AV)))/ (3*u_lab[i]),2)) 
             ###print "!=0", list[i], rob_avg, u_AV, u_lab[i],(list[i] - (rob_avg - (2*u_AV)))/ (2*u_lab[i])
-	    elif u_AV !=0:
-	        Ez_minus95.append(round((list[i] - (rob_avg - (2*u_AV)))/ (2*u_AV),2)) #new 06042015
+        elif u_AV !=0:
+            Ez_minus95.append(round((list[i] - (rob_avg - (2*u_AV)))/ (2*u_AV),2)) #new 06042015
             Ez_plus95.append(round((list[i] - (rob_avg - (2*u_AV)))/ (2*u_AV),2)) 
             Ez_minus99.append(round((list[i] - (rob_avg - (3*u_AV)))/ (3*u_AV),2))
             Ez_plus99.append(round((list[i] - (rob_avg - (3*u_AV)))/ (3*u_AV),2))        
