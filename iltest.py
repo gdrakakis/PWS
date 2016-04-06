@@ -1167,6 +1167,7 @@ def check_stats (robAA, robSS, diff, diff_pc, stat_matrix):
     warning = []
     action = []
 
+    #print Ez_minus95
     for i in range (len(diff)):
         # diff
         if diff[i] > 3*robSS or diff[i] < -3*robSS:
@@ -1196,7 +1197,7 @@ def check_stats (robAA, robSS, diff, diff_pc, stat_matrix):
         if abs(e_val95[i]) >=1:
             #warning.append([labz[i], e_val95[i], "Warning Based on En value (95% confidence level)"])
             warning.append([labz[i], str(e_val95[i]), "Warning Based on En value (95% confidence level)"])
-        if abs(e_val95[i]) >=1:
+        if abs(e_val99[i]) >=1:
             #warning.append([labz[i], e_val99[i], "Warning Based on En value (99% confidence level)"])
             warning.append([labz[i], str(e_val99[i]), "Warning Based on En value (99% confidence level)"])
 
@@ -1365,8 +1366,8 @@ def create_task_interlabtest():
                                 "values": suggestions_dic
                                }
                              },
-        "figures": {"Figure 1: Colour Histogram for Lab Raw Data" : fig1b, 
-                    "Figure 2: Histogram for Raw Lab Data": fig2b,
+        "figures": {"Figure 1: Histogram for Lab Raw Data" : fig1b, 
+                    "Figure 2: Histogram for Bias Estimates": fig2b,
                     "Figure 3: Normal probability plot of expanded uncertainties based on ranks" : fig3, 
                     "Figure 4: Normal probability plot of expanded uncertainties based on rank percentages" : fig4,
                     "Figure 5: Normal probability plot of result values based with z-score outliers" : fig5,
