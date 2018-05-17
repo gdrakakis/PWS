@@ -8,28 +8,18 @@ import base64
 import numpy
 import math
 import scipy
+import random
 from copy import deepcopy
-from sklearn.cross_decomposition import PLSCanonical, PLSRegression, CCA
-from sklearn import linear_model
 from numpy  import array, shape, where, in1d
 import ast
-import threading
-import Queue
-import time
-import random
-from random import randrange
-from sklearn import cross_validation
-from sklearn.naive_bayes import GaussianNB, MultinomialNB, BernoulliNB
 import io
 from io import BytesIO
 import cStringIO
 from numpy import random
-import scipy
 from scipy.stats import chisquare
-from copy import deepcopy
 import operator 
 import matplotlib
-#matplotlib.use('Agg')
+matplotlib.use('Agg')
 import matplotlib.pyplot
 import matplotlib.pyplot as plt
 from operator import itemgetter
@@ -266,18 +256,27 @@ def hist_plots(num_bins, my_list_transposed, header):
 
     #print "Number of bins: ", num_bins
 
+ 
     for i in range (num_bins):
-        colours.append(random.rand(3,1)) # random colour scheme
-                
+        #colours.append(random.rand(3,1)) # random colour scheme
+        colours.append([random.uniform(0, 1) for p in range(0, 3)])
+    #print colours           
 
     #myFIGA1 = plt.figure(figsize=(8, 6), dpi=80, facecolor='w', edgecolor='k') ###
     myFIGA1a = plt.figure()
 
     # hist returns: num inst, bin bound, patches
-    nn, bb, pp  = plt.hist(my_list_transposed[1], bins=num_bins, histtype='barstacked', color = random.rand(3,1), stacked=True) # , normed=True
+    #nn, bb, pp  = plt.hist(my_list_transposed[1], bins=num_bins, histtype='barstacked', color = None, stacked=True) # , normed=True
+    nn, bb, pp  = plt.hist(my_list_transposed[1], bins=num_bins, histtype='barstacked', color = [random.uniform(0, 1) for p in range(0, 3)], stacked=True) # , normed=True
+
+    #until 16 05 2018
+    #nn, bb, pp  = plt.hist(my_list_transposed[1], bins=num_bins, histtype='barstacked', color = random.rand(3,1), stacked=True) # , normed=True
+    
+
+
     #for i in range (len(bb)):
     #    bb += 0.000001
-
+    
     ## copy labels for 2nd histogram (first copy gets altered here)
     labels_copy = deepcopy(labels) 
 
@@ -289,31 +288,8 @@ def hist_plots(num_bins, my_list_transposed, header):
             pp.pop(i)
             colours.pop(i)
     for i in range (len(pp)):
-        plt.setp(pp[i], color=colours[i])  
-
-    ##################################################################################################
-    # extra space for legend
-    #leg_box = plt.legend(pp, labels,bbox_to_anchor=(1.05, 1, 1.25, 0), loc=2,  mode="expand", borderaxespad=0.,fontsize = 'x-small')
-    #myFIGA.savefig('C:/Python27/inter_test1.png', dpi=300, format='png', bbox_extra_artists=(leg_box,), bbox_inches='tight')
-    #
-    # local maximize window
-    #mng = plt.get_current_fig_manager()
-    #mng.resize(*mng.window.maxsize())
-    ##################################################################################################
-	
-    """
-    myLegend = plt.legend(pp, labels,bbox_to_anchor=(1.05, 1, 1.25, 0), loc=2,  mode="expand", borderaxespad=0.,fontsize = 'x-small')
-    sio = cStringIO.StringIO()
-    myFIGA1.savefig(sio, dpi=300, format='png', bbox_extra_artists=(myLegend,), bbox_inches='tight') #myFIGA1.savefig("C:/Python27/interBLX1.png", dpi=300, format='png', bbox_extra_artists=(myLegend,), bbox_inches='tight')
-    saveas = pickle.dumps(myFIGA1)  ### 
-    fig1_encoded = base64.b64encode(saveas)
-    #plt.tight_layout(rect = (0,0,0.5,1))
-    plt.show()
-    """
-
-    #without subplot
-    #myLegend = plt.legend(pp, labels,bbox_to_anchor=(1.05, 1, 1.25, 0), loc=2,  mode="expand", borderaxespad=0.,fontsize = 'x-small')
-    #myLegend = plt.legend(pp, labels,bbox_to_anchor=(1.05, 1, 1.25, 0), loc=2, borderaxespad=0.,fontsize = 'x-small')
+        plt.setp(pp[i], color=colours[i]) #until 16 05 2018 
+        #plt.setp(pp[i], color=None)
 
     plt.xlabel("Measurements")
     plt.ylabel("Number of Labs")
@@ -324,41 +300,16 @@ def hist_plots(num_bins, my_list_transposed, header):
     #myLegend = ax.legend(pp, labels,bbox_to_anchor=(1.05, 1, 1.25, 0), loc=2,  mode="expand", borderaxespad=0.,fontsize = 'x-small')
     myLegend = ax.legend(pp, labels,bbox_to_anchor=(1.05, 1, 1.25, 0), loc=2, borderaxespad=0.,fontsize = 'x-small')
 
-    #ax.axes.get_xaxis().set_visible(False)
-    #ax.axes.get_xaxis().set_ticks([])
-
-    ## String IO
-    #sio = cStringIO.StringIO()
-    #myFIGA1a.savefig(sio, dpi=300, format='png', bbox_extra_artists=(myLegend,), bbox_inches='tight')
-    #saveas = pickle.dumps(sio.getvalue()) ###   
-    #fig1a_encoded = base64.b64encode(saveas)
 
     plt.tight_layout()
-    #plt.show() #HIDE show on production
+    ##plt.show() #HIDE show on production
     sio = BytesIO()
     myFIGA1a.savefig(sio, dpi=300, format='png', bbox_extra_artists=(myLegend,),bbox_inches='tight') 
     sio.seek(0)
     fig1a_encoded = base64.b64encode(sio.getvalue())
 
     plt.close()
-	
 
-    ######################## test decoder
-    ## THIS WORKS WITH::: saveas = pickle.dumps(sio.getvalue()) ###
-    #decc = base64.standard_b64decode(fig1_encoded) 
-    #mystr = pickle.loads(decc)
-    #stb = cStringIO.StringIO(mystr)
-    #img = Image.open(stb)
-    #img.seek(0)
-    #plt.imshow(img)
-    ## THIS WORKS ON SAVED IMAGE ############
-    #stb = cStringIO.StringIO(sio.getvalue())
-    #img = Image.open(stb)
-    #img.seek(0)
-    #plt.imshow(img)
-    #########################end test decoder
-
-	
     myFIGA1b = plt.figure()
 
     X = []
@@ -366,7 +317,7 @@ def hist_plots(num_bins, my_list_transposed, header):
     for i in range (len(bb)-1):
         X.append( (bb[i] + bb[i+1]) / 2 )
         Y.append(0)
-    #print X, "\n", Y ##################
+
     plt.plot(Y,X, 'r--')
     for i in range (len(X)):
         plt.text(Y[i]+0.1, X[i], labels_copy[i])
@@ -375,8 +326,7 @@ def hist_plots(num_bins, my_list_transposed, header):
     plt.xlabel(header[0])
     plt.ylabel(header[1])
 
-    #plt.xlabel("Laboratories")
-    #plt.ylabel("Measurements")
+
     plt.title('Histogram of data as reported')
 
     ax  = myFIGA1b.add_subplot(111)
@@ -384,17 +334,11 @@ def hist_plots(num_bins, my_list_transposed, header):
     ax.axes.get_xaxis().set_ticks([])
 
     plt.tight_layout()
-    #plt.show() #HIDE show on production
+    ##plt.show() #HIDE show on production
     sio = BytesIO()
     myFIGA1b.savefig(sio, dpi=300, format='png') 
     sio.seek(0)
     fig1b_encoded = base64.b64encode(sio.getvalue())
-
-    ## String IO version
-    #sio = cStringIO.StringIO()
-    #myFIGA1b.savefig(sio, dpi=300, format='png') 
-    #saveas = pickle.dumps(sio.getvalue())
-    #fig1b_encoded = base64.b64encode(saveas)
 
     plt.close()
 
@@ -420,14 +364,19 @@ def hist_bias(num_bins, my_list_transposed, header):
     colours = []
     #print num_bins
     for i in range (num_bins):
-        colours.append(random.rand(3,1)) # random colour scheme
+        colours.append([random.uniform(0, 1) for p in range(0, 3)]) # random colour scheme
+    #print "\n\n\n colours \n\n\n", colours, "\n\n\n"
                 
 
     #myFIGA1 = plt.figure(figsize=(8, 6), dpi=80, facecolor='w', edgecolor='k') ###
     myFIGA2a = plt.figure()
 
     # hist returns: num inst, bin bound, patches
-    nn, bb, pp  = plt.hist(my_list_transposed[1], bins=num_bins, histtype='barstacked', color = random.rand(3,1), stacked=True) # , normed=True
+    nn, bb, pp  = plt.hist(my_list_transposed[1], bins=num_bins, histtype='barstacked', color = [random.uniform(0, 1) for p in range(0, 3)], stacked=True) # , normed=True
+
+    # until 15 05 2018
+    #nn, bb, pp  = plt.hist(my_list_transposed[1], bins=num_bins, histtype='barstacked', color = random.rand(3,1), stacked=True) # , normed=True
+
 
     ## copy labels for 2nd histogram (first copy gets altered here)
     labels_copy = deepcopy(labels) 
@@ -438,7 +387,8 @@ def hist_bias(num_bins, my_list_transposed, header):
             pp.pop(i)
             colours.pop(i)
     for i in range (len(pp)):
-        plt.setp(pp[i], color=colours[i])  
+        plt.setp(pp[i], color=colours[i])  ## 16 05 2018 
+        #plt.setp(pp[i], color=None)  
 
 
     myLegend = plt.legend(pp, labels,bbox_to_anchor=(1.05, 1, 1.25, 0), loc=2, borderaxespad=0.,fontsize = 'x-small')
@@ -447,12 +397,8 @@ def hist_bias(num_bins, my_list_transposed, header):
     plt.ylabel("Number of Laboratories")
     plt.title('Histogram of estimates of laboratory bias')
 
-    #ax  = myFIGA2a.add_subplot(111)
-    #myLegend = ax.legend(pp, labels,bbox_to_anchor=(1.05, 1, 1.25, 0), loc=2, borderaxespad=0.,fontsize = 'x-small')
-    #ax.axes.get_xaxis().set_ticks([])
-
     plt.tight_layout()
-    #plt.show() #HIDE show on production
+    ##plt.show() #HIDE show on production
     sio = BytesIO()
     myFIGA2a.savefig(sio, dpi=300, format='png', bbox_extra_artists=(myLegend,),bbox_inches='tight') 
     sio.seek(0)
@@ -479,8 +425,6 @@ def hist_bias(num_bins, my_list_transposed, header):
         plt.text(Y[i]+0.1, X[i], labels_copy[i])
     plt.axis([0, 1, min(bb), abs(min(bb))+max(bb)]) ##abs
     
-    #plt.xlabel(header[0])
-    #plt.ylabel(header[1])
     plt.xlabel(" Laboratories")
     plt.ylabel("Bias Estimate")
     plt.title('Histogram of estimates of laboratory bias')
@@ -489,16 +433,11 @@ def hist_bias(num_bins, my_list_transposed, header):
     ax.axes.get_xaxis().set_ticks([])
 
     plt.tight_layout()
-    #plt.show() #HIDE show on production
+    ##plt.show() #HIDE show on production
     sio = BytesIO()
     myFIGA2b.savefig(sio, dpi=300, format='png') 
     sio.seek(0)
     fig2b_encoded = base64.b64encode(sio.getvalue())
-
-    #sio = cStringIO.StringIO()
-    #myFIGA2b.savefig(sio, dpi=300, format='png') 
-    #saveas = pickle.dumps(sio.getvalue())
-    #fig2b_encoded = base64.b64encode(saveas)
 
     plt.close()
 
@@ -536,7 +475,7 @@ def plot_ranks (ranks, ranks_pc, values, uncertainties, rob_avg, uncertaintyAV):
     plt.title('Normal probability plot of expanded uncertainties for lab rankings')
 
     plt.tight_layout()
-    #plt.show() #HIDE show on production
+    ##plt.show() #HIDE show on production
     sio = BytesIO()
     myFIGA3.savefig(sio, dpi=300, format='png') 
     sio.seek(0)
@@ -562,7 +501,7 @@ def plot_ranks (ranks, ranks_pc, values, uncertainties, rob_avg, uncertaintyAV):
     plt.title('Normal probability plot of expanded uncertainties for % ranking of labs')
 
     plt.tight_layout()
-    #plt.show() #HIDE show on production
+    ##plt.show() #HIDE show on production
     sio = BytesIO()
     myFIGA4.savefig(sio, dpi=300, format='png') 
     sio.seek(0)
@@ -596,17 +535,11 @@ def ranks_vs_values (values, ranks_pc, z_scores):
     #ax.axes.get_xaxis().set_ticks([])
 
     plt.tight_layout()
-    #plt.show() #HIDE show on production
+    ##plt.show() #HIDE show on production
     sio = BytesIO()
     myFIGA5.savefig(sio, dpi=300, format='png', bbox_inches="tight") 
     sio.seek(0)
     fig5_encoded = base64.b64encode(sio.getvalue())
-
-    #sio = cStringIO.StringIO()
-    #myFIGA5.savefig(sio, dpi=300, format='png') 
-    #saveas = pickle.dumps(sio.getvalue())
-    #fig5_encoded = base64.b64encode(saveas)
-
 
     plt.close()
     return fig5_encoded
@@ -716,10 +649,6 @@ def interlab_test_pt1 (headers, myData, myDataTransposed ):
     #headers, myData, myDataTransposed = get_data() # transposed == REVERSED INDICES
     #print "\n\n\n", myData, myDataTransposed , "\n\n\n"
     dataTransposed = deepcopy(myDataTransposed) ### data may be modified depending on extreme values - use for plots
-    
-    #print "\nHeaders: ", headers
-    #print "\nSorted Data: ", myData
-    #print "\nProcessed Data: ", myDataTransposed
 
     data_list, robust_avg_x, robust_std_s = loop_algorithm_a(myDataTransposed[1]) # 'values' index
     #print robust_avg_x, robust_std_s
@@ -739,7 +668,7 @@ def interlab_test_pt1 (headers, myData, myDataTransposed ):
         test_bin = 20
     #print "\nCalculated bins: ", test_bin
     fig1a, fig1b = hist_plots(test_bin, dataTransposed, headers)
-
+    #print "\n\n FIGS WORKED \n\n"
     """
         lab_bias = get_diff (myDataTransposed[0], tempX)
         print "\nLab Bias: ", myDataTransposed[0], lab_bias
@@ -958,7 +887,7 @@ def individual_z_scores (labz, z_scores):
         #ax.axes.get_xaxis().set_ticks([])
 
         plt.tight_layout()
-        #plt.show() #HIDE show on production
+        ##plt.show() #HIDE show on production
         sio = BytesIO()
         myFIGA6.savefig(sio, dpi=300, format='png', bbox_inches="tight") 
         sio.seek(0)
@@ -1128,14 +1057,14 @@ def std_v_avg (datalist, robust_average):
     ax.annotate("0.1% level", xy = (numpy.mean(x_mat2), max(y_pos_mat2)), xytext=(round(numpy.mean(x_mat2) + 0.05*numpy.mean(x_mat2)), round(max(y_pos_mat2) + 0.05*max(y_pos_mat2))), arrowprops=dict(facecolor='black', shrink=0.05))
 
 
-    #plt.show() # hide on production
+    #plt.show() # debug
     plt.xlabel("Average")
     plt.ylabel("Standard Deviation")
 
     plt.title('Plot of Standard Deviations against Averages including 0.1%, 1% and 5% levels')
 
     plt.tight_layout()
-    #plt.show() #HIDE show on production
+    ##plt.show() #HIDE show on production
     sio = BytesIO()
     myFIGA7.savefig(sio, dpi=300, format='png', bbox_inches="tight") 
     sio.seek(0)
@@ -1396,11 +1325,10 @@ def create_task_interlabtest():
     #debug area
     #######################################################
     # Entire Response JSON
-
     #xx = open("C:/Python27/delete123.txt", "w")
     #xx.writelines(str(task))
     #xx.close()
-
+    #
     # IMAGE
     """
     decc = base64.standard_b64decode(fig1) 
@@ -1410,72 +1338,7 @@ def create_task_interlabtest():
     img.seek(0)
     img.save('C:/Python27/interlab_test_image.png', 'png')
     """
-    # DELETE THIS ONWARDS
-    """
-    decc = base64.standard_b64decode(fig1a) 
-    mystr = pickle.loads(decc)
-    stb = io.BytesIO(mystr)
-    img = Image.open(stb)
-    img.seek(0)
-    img.save('C:/Python27/Flask-0.10.1/python-api/Ilt/fig1aW.png', 'png')
- 
-    decc = base64.standard_b64decode(fig1b) 
-    mystr = pickle.loads(decc)
-    stb = io.BytesIO(mystr)
-    img = Image.open(stb)
-    img.seek(0)
-    img.save('C:/Python27/Flask-0.10.1/python-api/Ilt/fig1bW.png', 'png')
-
-    decc = base64.standard_b64decode(fig2a) 
-    mystr = pickle.loads(decc)
-    stb = io.BytesIO(mystr)
-    img = Image.open(stb)
-    img.seek(0)
-    img.save('C:/Python27/Flask-0.10.1/python-api/Ilt/fig2aW.png', 'png')
-
-    decc = base64.standard_b64decode(fig2b) 
-    mystr = pickle.loads(decc)
-    stb = io.BytesIO(mystr)
-    img = Image.open(stb)
-    img.seek(0)
-    img.save('C:/Python27/Flask-0.10.1/python-api/Ilt/fig2bW.png', 'png')
-
-    decc = base64.standard_b64decode(fig3) 
-    mystr = pickle.loads(decc)
-    stb = io.BytesIO(mystr)
-    img = Image.open(stb)
-    img.seek(0)
-    img.save('C:/Python27/Flask-0.10.1/python-api/Ilt/fig3W.png', 'png')
-
-    decc = base64.standard_b64decode(fig4) 
-    mystr = pickle.loads(decc)
-    stb = io.BytesIO(mystr)
-    img = Image.open(stb)
-    img.seek(0)
-    img.save('C:/Python27/Flask-0.10.1/python-api/Ilt/fig4W.png', 'png')
-
-    decc = base64.standard_b64decode(fig5) 
-    mystr = pickle.loads(decc)
-    stb = io.BytesIO(mystr)
-    img = Image.open(stb)
-    img.seek(0)
-    img.save('C:/Python27/Flask-0.10.1/python-api/Ilt/fig5W.png', 'png')
-
-    decc = base64.standard_b64decode(fig6) 
-    mystr = pickle.loads(decc)
-    stb = io.BytesIO(mystr)
-    img = Image.open(stb)
-    img.seek(0)
-    img.save('C:/Python27/Flask-0.10.1/python-api/Ilt/fig6W.png', 'png')
-
-    decc = base64.standard_b64decode(fig7) 
-    mystr = pickle.loads(decc)
-    stb = io.BytesIO(mystr)
-    img = Image.open(stb)
-    img.seek(0)
-    img.save('C:/Python27/Flask-0.10.1/python-api/Ilt/fig7W.png', 'png')
-    """
-    #END DELETE THIS
+   
     return jsonOutput, 201 
 
 if __name__ == '__main__': 
